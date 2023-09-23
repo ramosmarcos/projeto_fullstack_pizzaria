@@ -42,3 +42,7 @@
 
     </nav>
 </header>
+
+<div class="alert alert-sucess">
+    <p>Pedido realizado com sucesso!</p>
+</div>

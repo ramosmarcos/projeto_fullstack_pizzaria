@@ -2,6 +2,9 @@ html, body { /* Preencher toda a tela*/
     height: 100%;
 }
 
+.row {
+    margin: 0;
+}
 
 
 /* NAVBAR */
@@ -9,7 +12,8 @@ html, body { /* Preencher toda a tela*/
 /* desenho da pizza */
 #brand-logo { 
     /* coloquei aqui width 50px para diminuir o tamanho da imagem que estava enorme */
-    width: 50px;
+    width: 45px;
+    margin-left: 18px;
 }
 
 /* navbar inteira */
@@ -28,9 +32,91 @@ html, body { /* Preencher toda a tela*/
 
 
 
+
 /* HOME */
 
+#main-banner {
+    background-image: url("../img/pizza-banner.jpg");
+    height: 300px;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    background-position-y: -300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+#main-banner h1 {
+    color: white;
+    background-color: black;
+    text-align: center;
+    padding: 30px;
+    text-transform: uppercase;
+    width: 500px;
+    font-size: 35px;
+    border-radius: 18px;
+}
+
+/*Aqui é o container todo do centro tirando a parte do banner*/
+#main-container {
+    margin-bottom: 100px;
+    padding: 50px 0;
+    text-align: center;
+    /* min height para o rodapé ficar sempre no fundo, independente de como o contéudo se apresentar nos formulários de pizza*/
+    min-height: 50%;
+}
+
+#main-container h2 {
+    margin-bottom: 30px;
+}
+
+#pizza-form { /*Ajustando a posição dos formulários todos, no meio*/
+    max-width: 550px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/*Aqui são os formulários de borda, pizza e sabores juntos*/
+#pizza-form label {
+    font-weight: bold;
+    padding: 12px 0px 8px 0px;
+}
+
+/*O botão de submit*/
+.btn.btn-primary {
+    background-color: black;
+    border-color: black;
+    margin-top: 12px;
+}
+
+
+
+
+/* ALERTA */
+
+.alert {
+    border-radius: 0;
+    text-align: center;
+    margin-bottom: 0;
+    font-weight: bold;
+    padding: 20px;
+    font-size: 18px;
+    background-color: rgb(176, 236, 176);
+    color: rgb(15, 105, 15);
+}
+
+.alert.alert-sucess {
+    border: 2px solid #155724;
+}
+
+.alert.alert-warning {
+    border: 2px solid #856404;
+}
+
+.alert p {
+    margin-bottom: 0;
+}
 
 
 
@@ -51,6 +137,7 @@ footer {
      /* justify-content center centraliza na horizontal*/
     justify-content: center;
     font-weight: bold;
+    
 }
 
 
