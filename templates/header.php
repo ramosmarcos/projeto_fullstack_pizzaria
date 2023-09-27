@@ -43,6 +43,8 @@
     </nav>
 </header>
 
-<div class="alert alert-sucess">
+
+
+<div class="alert alert-sucess"> <!-- AQUI É O ALERTA DE PEDIDO REALIZADO COM SUCESSO QUE VAI APARECER LOGO ABAIXO DO HEADER - ELE SERÁ DINÂMICO-->
     <p>Pedido realizado com sucesso!</p>
 </div>
