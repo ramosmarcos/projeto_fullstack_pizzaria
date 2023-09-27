@@ -3,7 +3,7 @@
 session_start();
 
 //DEFINIDO VARIÁVEIS PARA CONEXÃO COM O BANCO DE DADOS
-//usuário - ser root é padrão do sistema
+//usuário - ser "root" é padrão do sistema
 $user = "root";
 //senha - padrão do sql é ser vazia
 $pass = "";

@@ -1,3 +1,23 @@
+<?php 
+
+    include("process/conn.php");
+
+    $msg = "";
+
+    if(isset($_SESSION["msg"])) {
+
+        $msg = $_SESSION["msg"];
+        $status = $_SESSION["status"];
+
+        $_SESSION["msg"] = "";
+        $_SESSION["status"] = "";
+
+    }
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -44,7 +64,8 @@
 </header>
 
 
-
-<div class="alert alert-sucess"> <!-- AQUI É O ALERTA DE PEDIDO REALIZADO COM SUCESSO QUE VAI APARECER LOGO ABAIXO DO HEADER - ELE SERÁ DINÂMICO-->
-    <p>Pedido realizado com sucesso!</p>
+<?php if ($msg != "") { ?>
+<div class="alert alert-<?=$status?>"> <!-- AQUI É O ALERTA DE PEDIDO REALIZADO COM SUCESSO QUE VAI APARECER LOGO ABAIXO DO HEADER - ELE SERÁ DINÂMICO-->
+    <p><?= $msg ?></p>
 </div>
+<?php } ?>
