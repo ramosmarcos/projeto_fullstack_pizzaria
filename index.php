@@ -30,13 +30,12 @@
                         <select name="borda" id="borda" class="form-control">
                             <option value="">Selecione a borda da pizza:</option>
 
+                            <!-- CONEXÃO COM BD DE BORDAS -->
+                            <?php foreach ($bordas as $borda): ?>
 
-                        <!-- CONEXÃO COM BD DE BORDAS -->
-                        <?php foreach ($bordas as $borda): ?>
+                                <option value="<?= $borda['id'] ?>"><?= $borda["tipo"] ?></option>
 
-                            <option value="<?= $borda['id'] ?>"><?= $borda["tipo"] ?></option>
-
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
 
                         </select>
                     </div>
@@ -93,7 +92,7 @@
                         <label for="sabores">Sabores:</label>
                         <select multiple name="sabores[]" id="sabores" class="form-control">
 
-                        <!-- CONEXÃO COM BD DE MASSAS -->
+                        <!-- CONEXÃO COM BD DE SABORES -->
                         <?php foreach ($sabores as $sabor): ?>
 
                             <option value="<?= $sabor['id'] ?>"><?= $sabor["tipo"] ?></option>
