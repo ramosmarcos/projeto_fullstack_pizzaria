@@ -1,117 +1,5 @@
-<?php
-//Este é o arquivo que servirá como base para montarmos as pizzas na home
 
-//Usamos o template do arquivo de conexões para conectar este arquivo de pizza.php também
-include_once("conn.php");
-
-// Obtém o método HTTP usado para acessar este arquivo (GET ou POST).
-$method = $_SERVER["REQUEST_METHOD"];
-
-// Resgate dos dados do DB e montagem do pedido se o método for GET - BASICAMENTE ESTA PARTE DO IF "GET" É PARA PEGAR OS DADOS DA DB E COLOCAR PARA O CLIENTE ESCOLHER NA TELA
-if ($method === "GET") {
-    
-    // Consulta o banco de dados para obter todas as bordas de pizza.
-    $bordasQuery = $conn->query("SELECT * FROM bordas");
-
-    // Armazena os resultados da consulta em um array associativo.
-    $bordas = $bordasQuery->fetchAll();
-
-
-    $massasQuery = $conn->query("SELECT * FROM massas");
-
-    $massas = $massasQuery->fetchAll();
-
-
-    $saboresQuery = $conn->query("SELECT * FROM sabores");
-
-    $sabores = $saboresQuery->fetchAll();
-
-
-// Criação do pedido se o método for POST
-} elseif ($method === "POST") {
-
-    // Obtém os dados enviados pelo cliente através do formulário POST.
-    $data = $_POST;
-
-    // Extrai informações específicas dos dados enviados.
-    $borda = $data["borda"];
-    $massa = $data["massa"];
-    $sabores = $data["sabores"];
-
-    //validação de sabores máximos (máx 3) - regra de negócio
-    if (count($sabores) > 3) {
-        
-        // Se o cliente selecionar mais de 3 sabores, uma mensagem de erro é definida.
-        $_SESSION["msg"] = "Selecione no máximo 3 sabores!";
-        $_SESSION["status"] = "warning";
-
-    } else {
-        
-        //Salvando BORDA e MASSA na pizza
-
-        $stmt = $conn->prepare("INSERT INTO pizza (bordas_id, massas_id) VALUES (:borda, :massa)");
-
-        //Filtrando inputs
-
-        $stmt->bindParam(":borda", $borda, PDO::PARAM_INT);
-        $stmt->bindParam(":massa", $massa, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        // resgatando o ultimo id da ultima pizza 
-
-        $pizzaId = $conn->lastInsertId();
-
-        $stmt = $conn->prepare("INSERT INTO pizza_sabores (pizza_id, sabores_id) VALUES (:pizza, :sabor)");
-
-        // repetição até terminar de salvar todos os SABORES
-
-        foreach($sabores as $sabor) {
-
-            // filtrando os inputs
-
-            $stmt->bindParam(":pizza", $pizzaId, PDO::PARAM_INT);
-            $stmt->bindParam(":sabor", $sabor, PDO::PARAM_INT);
-            
-            $stmt->execute();
-        }
-
-
-        // CRIAR O PEDIDO DA PIZZA:
-
-        $stmt = $conn->prepare("INSERT INTO pedidos (pizza_id, condicao_id) VALUES (:pizza, :status)");
-
-        // status deve sempre inicial como "1", que é "em produção":
-
-        $statusId = 1;
-
-        // filtrando os inputs
-
-        $stmt->bindParam(":pizza", $pizzaId, PDO::PARAM_INT);
-        $stmt->bindParam(":status", $statusId, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-
-        //EXIBIR MENSAGEM DE SUCESSO:
-
-        $_SESSION["msg"] = "Pedido realizado com sucesso";
-        $_SESSION["status"] = "success";
-
-    }
-    
-    //Retorna à pagina inicial
-    header("Location: ..");
-
-}
-
-?>
-
-
-
-<!--
-
-    1. Usamos o template do arquivo de conexões para conectar este arquivo de pizza.php também: Este comentário explica que o arquivo está incluindo (usando) outro arquivo chamado "conn.php", que  contém as configurações necessárias para conectar-se ao banco de dados. Ao incluir esse arquivo, este código obtém acesso às funcionalidades de conexão definidas nele.
+1. O arquivo está incluindo (usando) outro arquivo chamado "conn.php", que  contém as configurações necessárias para conectar-se ao banco de dados. Ao incluir esse arquivo, este código obtém acesso às funcionalidades de conexão definidas nele.
 
     1.1. $method = $_SERVER["REQUEST_METHOD"];: Esta linha de código obtém o método HTTP (GET ou POST) usado para acessar este arquivo. Ela usa a variável superglobal $_SERVER["REQUEST_METHOD"] para recuperar o método HTTP. Essa informação é importante porque permite ao código saber como o cliente está interagindo com a página, ou seja, se o cliente está apenas visualizando a página (GET) ou se está enviando dados por meio de um formulário (POST). O resultado é armazenado na variável $method para uso posterior.
 
@@ -133,11 +21,21 @@ if ($method === "GET") {
 
             fetchAll(): Ao chamar a função fetchAll() em um resultado de consulta (por exemplo, $bordasQuery->fetchAll()), você está pegando os dados brutos do banco de dados e convertendo-os em uma estrutura de dados mais amigável para PHP, que é um array associativo.
 
-            Array Associativo: O resultado da função fetchAll() é um array associativo onde cada entrada do array corresponde a uma linha do resultado da consulta. Isso torna os dados acessíveis e manipuláveis em PHP. Você pode iterar sobre o array, acessar campos específicos usando chaves associativas e realizar operações nos dados de forma mais fácil.
+                Array Associativo: O resultado da função fetchAll() é um array associativo onde cada entrada do array corresponde a uma linha do resultado da consulta. Isso torna os dados acessíveis e manipuláveis em PHP. Você pode iterar sobre o array, acessar campos específicos usando chaves associativas e realizar operações nos dados de forma mais fácil.
 
             Portanto, essa conversão é essencial para permitir que você utilize os dados do banco de dados em seu código PHP, facilitando o processamento e a exibição desses dados em sua aplicação web. É uma parte fundamental da interação entre o banco de dados e a linguagem de programação.
 
     2.3. $bordasQuery = $conn->query("SELECT * FROM bordas");: Nesta linha, uma consulta SQL é executada no banco de dados. A consulta é especificada entre as aspas duplas e diz ao banco de dados para selecionar todas as informações da tabela "bordas". O resultado da consulta é armazenado na variável $bordasQuery.
+
+            $conn representa a conexão com o banco de dados, estabelecida anteriormente através do arquivo conn.php.
+
+            Query("SELECT * FROM bordas") é um método da classe PDO que executa a consulta SQL especificada entre parênteses. No caso, estamos selecionando todos os registros da tabela bordas.
+
+            O resultado da consulta é armazenado na variável $bordasQuery. Essa variável agora contém um objeto que representa o conjunto de resultados da consulta.
+
+            em $conn->query("SELECT * FROM bordas");, $conn é um objeto que representa uma conexão com o banco de dados, e query é um método desse objeto. O operador de seta (->) é usado para chamar o método query no objeto $conn.
+
+            No contexto de bancos de dados e PDO (PHP Data Objects), o operador de seta é comumente utilizado para chamar métodos que executam consultas SQL ou interagem com o banco de dados.
 
     2.4. $bordas = $bordasQuery->fetchAll();: Aqui, a função fetchAll() é usada para buscar todos os resultados da consulta que foi armazenada em $bordasQuery. Essa função retorna esses resultados como um array associativo, onde cada entrada do array representa uma borda de pizza com seus atributos (por exemplo, nome, preço, ID, etc.). O resultado é então armazenado na variável $bordas.
 
@@ -165,7 +63,7 @@ if ($method === "GET") {
 
     3.3. $borda = $data["borda"];, $massa = $data["massa"];, $sabores = $data["sabores"];: Neste trecho, estamos atribuindo valores às variáveis $borda, $massa e $sabores. Esses valores são obtidos a partir do array associativo $_POST, que é preenchido com os dados enviados pelo cliente por meio de um formulário HTML usando o método POST.
 
-        Por exemplo a borda: $borda = $data["borda"];: Aqui, estamos atribuindo à variável $borda o valor que foi enviado pelo cliente com o nome "borda" no formulário. Isso significa que estamos capturando a escolha da borda da pizza que o cliente fez.
+         Por exemplo a borda: $borda = $data["borda"];: Aqui, estamos atribuindo à variável $borda o valor que foi enviado pelo cliente com o nome "borda" no formulário. Isso significa que estamos capturando a escolha da borda da pizza que o cliente fez.
 
     
     3.4. if (count($sabores) > 3) {: Esta é uma validação de regra de negócio. Estamos verificando se o cliente selecionou mais de 3 sabores, o que não é permitido. Se isso acontecer, uma mensagem de erro é definida na variável de sessão $_SESSION["msg"] e o status é definido como "warning".
@@ -218,8 +116,6 @@ if ($method === "GET") {
 
 
     3.8. $stmt->execute();: Aqui, estamos executando a instrução SQL para inserir os dados na tabela "pizza".
-    
-            OBS: $stmt->execute(); é uma instrução que efetivamente executa a consulta preparada anteriormente. Quando você prepara uma consulta SQL com o método prepare() da classe PDO, você está criando um modelo da consulta com espaços reservados para os valores que serão inseridos posteriormente de forma segura. O método execute() é responsável por preencher esses espaços reservados com os valores fornecidos e executar a consulta no banco de dados.
 
             No contexto deste código, após a preparação da consulta SQL para inserir uma nova pizza no banco de dados, os espaços reservados :borda e :massa são preenchidos com os valores das variáveis $borda e $massa. Em seguida, a chamada $stmt->execute(); efetivamente insere uma nova entrada na tabela de pizzas com os valores fornecidos. Isso garante que a operação de inserção seja realizada de maneira segura e evita vulnerabilidades de segurança, como SQL injection.
 
@@ -253,4 +149,3 @@ if ($method === "GET") {
 
     
     3.11. header("Location: ..");: Estamos redirecionando o cliente de volta à página inicial após o pedido ser realizado com sucesso.
-
