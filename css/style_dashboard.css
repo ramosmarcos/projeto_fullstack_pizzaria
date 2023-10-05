@@ -1,0 +1,32 @@
+
+/* DASHBOARD */
+
+button.delete-btn, button.update-btn {
+    border: none;
+    background-color: transparent;
+}
+
+button.delete-btn {
+    padding-top: 3.5px;
+    color: #721c24;
+    font-size: 20px;
+}
+
+button.update-btn {
+    color: #004085;
+    margin-left: 10px;
+}
+
+.update-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.status-input {
+    width: 55%;
+}
+
+table ul {
+    text-align: left;
+}
+

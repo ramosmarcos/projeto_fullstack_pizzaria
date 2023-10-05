@@ -1,10 +1,14 @@
 <?php
 
-include_once("templates/header.php")
+include_once("templates/header.php");
+include_once("process/orders.php");
 
 ?>
 
-<?php ?>
+
+
+<link rel="stylesheet" href="css/style_dashboard.css">
+
 
 <div id="main-container">
     <div class="container">
