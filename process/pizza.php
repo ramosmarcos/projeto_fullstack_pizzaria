@@ -79,16 +79,16 @@ if ($method === "GET") {
 
         // CRIAR O PEDIDO DA PIZZA:
 
-        $stmt = $conn->prepare("INSERT INTO pedidos (pizza_id, condicao_id) VALUES (:pizza, :status)");
+        $stmt = $conn->prepare("INSERT INTO pedidos (pizza_id, condicao_id) VALUES (:pizza, :condicao)");
 
-        // status deve sempre inicial como "1", que é "em produção":
+        // status (condicao) deve sempre inicial como "1", que é "em produção":
 
-        $statusId = 1;
+        $condicaoId = 1;
 
         // filtrando os inputs
 
         $stmt->bindParam(":pizza", $pizzaId, PDO::PARAM_INT);
-        $stmt->bindParam(":status", $statusId, PDO::PARAM_INT);
+        $stmt->bindParam(":condicao", $condicaoId, PDO::PARAM_INT);
 
         $stmt->execute();
 

@@ -15,7 +15,7 @@ if ($method === "GET") {
     //como pegamos ali em cima os pedidos, mas apenas os Ids em números, por conta do array de pedidos do fetchAll, não teremos uma listagem bonita das massas, sabores e bordas com seus nomes - Por isso faremos assim:
     $pizzas = [];
 
-    foreach ($pedidos as $pedido) {
+    foreach($pedidos as $pedido) {
         
         $pizza = [];
 
@@ -23,7 +23,7 @@ if ($method === "GET") {
         $pizza["id"] = $pedido["pizza_id"];
 
         // resgatando a pizza
-        $pizzaQuery = $conn->prepare("SELECT * FROM pizza WHERE id = :pizza_id;");
+        $pizzaQuery = $conn->prepare("SELECT * FROM pizza WHERE id = :pizza_id");
 
         $pizzaQuery->bindParam(":pizza_id", $pizza["id"]);
 
@@ -33,9 +33,9 @@ if ($method === "GET") {
 
 
         // resgatando a borda da pizza
-        $bordaQuery = $conn->prepare("SELECT * FROM bordas WHERE id = :borda_id;");
+        $bordaQuery = $conn->prepare("SELECT * FROM bordas WHERE id = :bordas_id");
 
-        $bordaQuery->bindParam(":borda_id", $pizzaData["borda_id"]);
+        $bordaQuery->bindParam(":bordas_id", $pizzaData["bordas_id"]);
 
         $bordaQuery->execute();
 
@@ -45,9 +45,9 @@ if ($method === "GET") {
 
 
         // resgatando a massa da pizza
-        $massaQuery = $conn->prepare("SELECT * FROM massas WHERE id = :massa_id;");
+        $massaQuery = $conn->prepare("SELECT * FROM massas WHERE id = :massas_id;");
 
-        $massaQuery->bindParam(":massa_id", $pizzaData["massa_id"]);
+        $massaQuery->bindParam(":massas_id", $pizzaData["massas_id"]);
 
         $massaQuery->execute();
 
@@ -57,7 +57,7 @@ if ($method === "GET") {
 
 
         // resgatando os sabores da pizza
-        $saboresQuery = $conn->prepare("SELECT * FROM pizza_sabores WHERE id = pizza_id = :pizza_id");
+        $saboresQuery = $conn->prepare("SELECT * FROM pizza_sabores WHERE pizza_id = :pizza_id");
 
         $saboresQuery->bindParam(":pizza_id", $pizza["id"]);
 
@@ -69,17 +69,17 @@ if ($method === "GET") {
         // resgatando o nome dos sabores
         $saboresDaPizza = [];
 
-        $saborQuery = $conn->prepare("SELECT * FROM sabores WHERE id = :sabor_id;");
+        $saborQuery = $conn->prepare("SELECT * FROM sabores WHERE id = :sabores_id");
 
         foreach ($sabores as $sabor) {
             
-            $saborQuery->bindParam(":sabor_id", $sabor["sabor_id"]);
+            $saborQuery->bindParam(":sabores_id", $sabor["sabores_id"]);
 
             $saborQuery->execute();
 
             $saborPizza = $saborQuery->fetch(PDO::FETCH_ASSOC);
 
-            array_push($saboresDaPizza, $saborPizza["nome"]);
+            array_push($saboresDaPizza, $saborPizza["tipo"]); //ou "nome"?
 
         }
 
@@ -95,11 +95,18 @@ if ($method === "GET") {
 
     }
 
+    //Teste na tela para printar as infos
     print_r($pizzas);
+
+
+    //Resgatando os status ("condicao" - nome dado no banco de dados)
+    $condicaoQuery = $conn->query("SELECT * FROM condicao;");
+
+    $condicao = $condicaoQuery->fetchAll();
 
 } else if ($method === "POST") {
 
-};
+}
 
 
 ?>
