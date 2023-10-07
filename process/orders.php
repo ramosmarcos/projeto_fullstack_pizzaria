@@ -95,8 +95,8 @@ if ($method === "GET") {
 
     }
 
-    //Teste na tela para printar as infos
-    print_r($pizzas);
+    //Teste na tela para printar as infos:
+    // print_r($pizzas);
 
 
     //Resgatando os status ("condicao" - nome dado no banco de dados)
@@ -105,6 +105,30 @@ if ($method === "GET") {
     $condicao = $condicaoQuery->fetchAll();
 
 } else if ($method === "POST") {
+
+    // verificando o tipo de POST
+    $type = $_POST["type"]; 
+
+    // deletar pedido
+    if ($type === "delete") {
+        
+        $pizzaId = $_POST["id"];
+
+        $deleteQuery = $conn->prepare("DELETE FROM pedidos WHERE pizza_id = :pizza_id");
+
+        $deleteQuery->bindParam(":pizza_id", $pizzaId, PDO::PARAM_INT);
+
+        $deleteQuery->execute();
+
+        $_SESSION["msg"] = "Pedido removido com sucesso!";
+        $_SESSION["status"] = "success";
+
+        //Isso tudo conversa com o botão delete da dashboard
+
+    }
+
+    // agora retorna o usuário para dashboard
+    header("Location: ../dashboard.php");
 
 }
 
