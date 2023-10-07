@@ -45,8 +45,8 @@ include_once("process/orders.php");
                                         <?php endforeach; ?>
                                     </ul>
                                 </td>
-                                <td>
-                                    <form action="process/order.php" method="POST" class="form-group update-form">
+                                <td> <!-- UPDATE BUTTON AQUI -->
+                                    <form action="process/orders.php" method="POST" class="form-group update-form">
                                         <input type="hidden" name="type" value="update">
                                         <input type="hidden" name="id" value="<?= $pizza["id"]?>">
                                         <select name="status" class="form-control status-input">
@@ -63,7 +63,7 @@ include_once("process/orders.php");
                                         </button>
                                     </form>
                                 </td>
-                                <td>
+                                <td> <!-- DELETE BUTTON AQUI -->
                                     <form action="process/orders.php" method="POST">
                                         <input type="hidden" name="type" value="delete">
                                         <input type="hidden" name="id" value="<?= $pizza["id"]?>">

@@ -111,7 +111,8 @@ if ($method === "GET") {
 
     // deletar pedido
     if ($type === "delete") {
-        
+
+        //Isso tudo conversa com o botão delete da dashboard
         $pizzaId = $_POST["id"];
 
         $deleteQuery = $conn->prepare("DELETE FROM pedidos WHERE pizza_id = :pizza_id");
@@ -123,7 +124,22 @@ if ($method === "GET") {
         $_SESSION["msg"] = "Pedido removido com sucesso!";
         $_SESSION["status"] = "success";
 
-        //Isso tudo conversa com o botão delete da dashboard
+
+    // atualizar o status do pedido (condicao) - botão selecionador da dashboard
+    } elseif ($type === "update") {
+        
+        $pizzaId = $_POST["id"];
+        $condicaoId = $_POST["status"];
+
+        $updateQuery = $conn->prepare("UPDATE pedidos SET condicao_id = :condicao_id WHERE pizza_id = :pizza_id");
+
+        $updateQuery->bindParam(":pizza_id", $pizzaId, PDO::PARAM_INT);
+        $updateQuery->bindParam(":condicao_id", $condicaoId, PDO::PARAM_INT);
+
+        $updateQuery->execute();
+
+        $_SESSION["msg"] = "Pedido atualizado com sucesso!";
+        $_SESSION["status"] = "success";
 
     }
 
