@@ -109,7 +109,7 @@ if ($method === "GET") {
 
 
 
-<!--
+<!-- VIDE ANOTAÇÕES SOBRE O CÓDIGO AQUI OU NO ARQUIVO "pizza_readme.txt"
 
     1. Usamos o template do arquivo de conexões para conectar este arquivo de pizza.php também: Este comentário explica que o arquivo está incluindo (usando) outro arquivo chamado "conn.php", que  contém as configurações necessárias para conectar-se ao banco de dados. Ao incluir esse arquivo, este código obtém acesso às funcionalidades de conexão definidas nele.
 
